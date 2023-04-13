@@ -1,0 +1,9 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:8.0.27
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: CarGo
+    ports:
+      - "3307:3306"
