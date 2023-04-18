@@ -16,6 +16,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+
 @RestController
 @RequestMapping("/api/auth")
 @CrossOrigin
@@ -54,7 +56,10 @@ public class AuthController {
                 signupRequest.getFirstName(),
                 signupRequest.getLastName(),
                 signupRequest.getDescription(),
-                signupRequest.isCompany());
+                signupRequest.isCompany(),
+                new ArrayList<>(),
+                new ArrayList<>(),
+                new ArrayList<>());
         userRepository.save(user);
 
         return ResponseEntity.ok("User registered successfully!");
