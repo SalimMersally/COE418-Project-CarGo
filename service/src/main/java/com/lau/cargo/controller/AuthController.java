@@ -30,13 +30,12 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("/signin")
-    public ResponseEntity<SigninResponse> signIn(@RequestBody SigninRequest signinRequest) throws Exception {
+    public ResponseEntity<SigninResponse> signIn(@RequestBody SigninRequest signinRequest) {
         String email = signinRequest.getEmail();
         String password = signinRequest.getPassword();
 
         Authentication userAuthentication = new UsernamePasswordAuthenticationToken(email, password);
         authenticationManager.authenticate(userAuthentication);
-        System.out.println("hi");
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(signinRequest.getEmail());
         String token = jwtTokenUtil.generateToken(userDetails);

@@ -25,6 +25,9 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-validation:3.0.4")
 	implementation("io.jsonwebtoken:jjwt:0.9.1")
 
+	implementation("io.temporal:temporal-sdk:1.18.2")
+	implementation("io.temporal:temporal-opentracing:1.18.2")
+
 	implementation("mysql:mysql-connector-java:8.0.32")
 
 	compileOnly("org.projectlombok:lombok")
