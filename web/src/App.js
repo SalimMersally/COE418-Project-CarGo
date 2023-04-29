@@ -7,6 +7,7 @@ import LogIn from "./Components/LogIn/LogIn";
 import SignUp from './Components/SignUp/SignUp';
 import {Route, Routes} from 'react-router-dom';
 import Dashboard from './Components/Dashboard';
+import Footer from "./Components/Footer/Footer";
 
 function App() {
     return (
@@ -20,6 +21,7 @@ function App() {
                 <Route path="/signup" element={<SignUp/>}/>
                 <Route path="/login" element={<LogIn/>}/>
             </Routes>
+            <Footer />
         </div>
     );
 }

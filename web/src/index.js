@@ -13,6 +13,7 @@ const colors = {
     },
     gray: {
         100: "#F5F5F5",
+        900: "#000406",
     },
     button: {
         500: "#F5F5F5",
