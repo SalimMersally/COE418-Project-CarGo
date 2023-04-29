@@ -10,6 +10,7 @@ import Dashboard from './Components/Dashboard';
 import Footer from "./Components/Footer/Footer";
 import Error from "./Components/Error/Error";
 import Book from "./Components/Book/Book";
+import LogOut from "./Components/LogOut/LogOut";
 
 function App() {
     return (
@@ -22,6 +23,7 @@ function App() {
                 <Route path="/contact" element={<ContactUs/>}/>
                 <Route path="/signup" element={<SignUp/>}/>
                 <Route path="/login" element={<LogIn/>}/>
+                <Route path="/logOut" element={<LogOut/>}/>
                 <Route path="/book-a-car" element={<Book/>}/>
                 <Route path='*' element={<Error/>}/>
             </Routes>

@@ -19,7 +19,12 @@ import {
 import {FaUserAlt} from "react-icons/fa";
 
 function Navbar() {
-    const [state] = useContext(AppContext);
+    const [state, dispatch] = useContext(AppContext);
+
+    function logout() {
+        dispatch({type: "SET_LOG", value: false});
+        dispatch({type: "SET_TOKEN", value: ""});
+    }
 
     return (<Flex as="header" zIndex="9999" w="100%" bg="black" px="10" py={2} justifyContent={"space-between"}>
         <Flex>
@@ -54,7 +59,7 @@ function Navbar() {
                     <Menu>
                         <MenuButton
                             as={IconButton}
-                            icon={<FaUserAlt color={"#0072C6"}  size={30}/>}
+                            icon={<FaUserAlt color={"#0072C6"} size={30}/>}
                             borderWidth={0}
                             backgroundColor={"transparent"}
                             _hover={{bg: "transparent", borderWidth: "2px"}}
@@ -62,12 +67,16 @@ function Navbar() {
                             _focus={{boxShadow: "transparent"}}
                         />
                         <MenuList>
-                            <MenuItem _hover={{bg: "#38a8ff"}} _active={{bg: "#0072C6"}}>
-                                <Link to={"/dashboard"}>Dashboard</Link>
-                            </MenuItem>
-                            <MenuItem>
-                                Log Out
-                            </MenuItem>
+                            <Link to={"/dashboard"}>
+                                <MenuItem _hover={{bg: "#38a8ff"}} _active={{bg: "#0072C6"}}>
+                                    Dashboard
+                                </MenuItem>
+                            </Link>
+                            <Link to={"/logout"}>
+                                <MenuItem _hover={{bg: "#38a8ff"}} _active={{bg: "#0072C6"}} onClick={logout}>
+                                    Log Out
+                                </MenuItem>
+                            </Link>
                         </MenuList>
                     </Menu>
                 </Box>
