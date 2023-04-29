@@ -42,7 +42,9 @@ function SignUp() {
                     if (res.data === "User registered successfully!") {
                         navigate("/login");
                     }
-                });
+                }).catch((error) => {
+                    setError2(error.response.data)
+            });
         }
     }
 

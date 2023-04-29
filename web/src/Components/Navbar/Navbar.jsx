@@ -1,9 +1,8 @@
-import React, {useContext} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {AppContext} from "../../StateProvider";
 import {Link} from "react-router-dom";
 import CarGoLogo from "./../../assets/CarGoLogo.png";
 import {
-    Box,
     Button,
     ButtonGroup,
     Center,
@@ -14,12 +13,29 @@ import {
     MenuButton,
     MenuItem,
     MenuList,
+    Text,
 } from "@chakra-ui/react";
 
 import {FaUserAlt} from "react-icons/fa";
+import axios from "axios";
 
 function Navbar() {
     const [state, dispatch] = useContext(AppContext);
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        if (state.isLogged) {
+            axios
+                .get("http://localhost:8080/api/auth", {
+                    headers: {
+                        'Authorization': `Bearer ${state.userToken}`
+                    }
+                })
+                .then((res) => {
+                    setUser(res.data);
+                });
+        }
+    }, [state.isLogged]);
 
     function logout() {
         dispatch({type: "SET_LOG", value: false});
@@ -55,7 +71,9 @@ function Navbar() {
         </Flex>
         <Flex alignItems={"center"}>
             {state.isLogged ?
-                <Box>
+                <Flex alignItems={"center"}>
+                    <Text color={"white"} pr={4} fontSize={'xl'}
+                          fontWeight={400}>{user?.firstName + " " + user?.lastName}</Text>
                     <Menu>
                         <MenuButton
                             as={IconButton}
@@ -79,7 +97,7 @@ function Navbar() {
                             </Link>
                         </MenuList>
                     </Menu>
-                </Box>
+                </Flex>
                 :
                 <Button bg="transparent" variant="link" colorScheme="button" mr="2">
                     <Link to="/login">LOGIN</Link>

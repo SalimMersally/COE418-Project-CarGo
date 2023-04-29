@@ -29,5 +29,4 @@ public class WorkflowController {
 
         return ResponseEntity.ok("Car is Booked");
     }
-
 }

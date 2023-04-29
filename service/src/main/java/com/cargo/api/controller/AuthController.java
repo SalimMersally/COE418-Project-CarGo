@@ -3,6 +3,7 @@ package com.cargo.api.controller;
 import com.cargo.api.request.SigninRequest;
 import com.cargo.api.request.SignupRequest;
 import com.cargo.api.response.SigninResponse;
+import com.cargo.api.response.UserDataResponse;
 import com.cargo.repository.UserRepository;
 import com.cargo.entity.User;
 import com.cargo.security.jwt.JwtTokenUtil;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +22,7 @@ import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin
+@CrossOrigin()
 @AllArgsConstructor
 public class AuthController {
     private AuthenticationManager authenticationManager;
@@ -28,6 +30,17 @@ public class AuthController {
     private JwtUserDetailsService userDetailsService;
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
+
+    @GetMapping()
+    public ResponseEntity<UserDataResponse> getUserData() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+
+        User user = userRepository.findByEmail(email);
+        UserDataResponse userDataResponse = new UserDataResponse(user.getEmail(), user.getFirstName(), user.getLastName(), user.getPhoneNumber());
+
+        return ResponseEntity.ok(userDataResponse);
+    }
 
     @PostMapping("/signin")
     public ResponseEntity<SigninResponse> signIn(@RequestBody SigninRequest signinRequest) {
@@ -46,7 +59,7 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<String> signUp(@RequestBody SignupRequest signupRequest) {
         if (userRepository.existsByEmail(signupRequest.getEmail())) {
-            return ResponseEntity.badRequest().body("Error: Email is already in use!");
+            return ResponseEntity.status(409).body("Email is already in use!");
         }
 
         User user = new User(0L,
