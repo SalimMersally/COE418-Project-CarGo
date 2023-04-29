@@ -1,4 +1,4 @@
-package com.cargo.apil.controller;
+package com.cargo.api.controller;
 
 import com.cargo.repository.CarRepository;
 import com.cargo.entity.Car;
@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 @RestController
 @RequestMapping("/car")
+@CrossOrigin
 public class CarController {
     @Autowired
     private CarRepository carRepository;

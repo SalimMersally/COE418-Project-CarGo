@@ -1,4 +1,4 @@
-package com.cargo.apil.controller;
+package com.cargo.api.controller;
 
 import com.cargo.repository.AddressRepository;
 import com.cargo.entity.Address;
@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 @RestController
 @RequestMapping("/address")
+@CrossOrigin
 public class AddressController {
     @Autowired
     private AddressRepository addressRepository;

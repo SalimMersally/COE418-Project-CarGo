@@ -1,8 +1,8 @@
-package com.cargo.apil.controller;
+package com.cargo.api.controller;
 
-import com.cargo.apil.request.SigninRequest;
-import com.cargo.apil.request.SignupRequest;
-import com.cargo.apil.response.SigninResponse;
+import com.cargo.api.request.SigninRequest;
+import com.cargo.api.request.SignupRequest;
+import com.cargo.api.response.SigninResponse;
 import com.cargo.repository.UserRepository;
 import com.cargo.entity.User;
 import com.cargo.security.jwt.JwtTokenUtil;
@@ -54,8 +54,7 @@ public class AuthController {
                 passwordEncoder.encode(signupRequest.getPassword()),
                 signupRequest.getFirstName(),
                 signupRequest.getLastName(),
-                signupRequest.getDescription(),
-                signupRequest.isCompany(),
+                signupRequest.getPhoneNumber(),
                 new ArrayList<>(),
                 new ArrayList<>(),
                 new ArrayList<>());

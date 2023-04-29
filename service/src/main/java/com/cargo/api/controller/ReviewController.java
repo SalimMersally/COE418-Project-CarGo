@@ -1,4 +1,4 @@
-package com.cargo.apil.controller;
+package com.cargo.api.controller;
 
 import com.cargo.entity.Review;
 import com.cargo.repository.ReviewRepository;
@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/review")
+@CrossOrigin
 public class ReviewController {
     @Autowired
     private ReviewRepository reviewRepository;

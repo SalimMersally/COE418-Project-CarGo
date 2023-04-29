@@ -1,4 +1,4 @@
-package com.cargo.apil.response;
+package com.cargo.api.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

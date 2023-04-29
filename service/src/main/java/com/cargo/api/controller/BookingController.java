@@ -1,4 +1,4 @@
-package com.cargo.apil.controller;
+package com.cargo.api.controller;
 
 import com.cargo.repository.BookingRepository;
 import com.cargo.entity.Booking;
@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 @RestController
 @RequestMapping("/booking")
+@CrossOrigin
 public class BookingController {
     @Autowired
     private BookingRepository bookingRepository;
