@@ -83,6 +83,6 @@ public class CarController {
     }
 
     private CarResponse getResponseFromCar(Car car) {
-        return new CarResponse(car.getCarId(), car.getMake(), car.getModel(), car.getYear(), car.getColor(), car.getCostPerDay());
+        return new CarResponse(car.getCarId(), car.getMake(), car.getModel(), car.getYear(), car.getColor(), car.getCostPerDay(), car.getDescription());
     }
 }

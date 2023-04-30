@@ -14,4 +14,5 @@ public class CarResponse {
     private Integer year;
     private String color;
     private int costPerDay;
+    private String description;
 }

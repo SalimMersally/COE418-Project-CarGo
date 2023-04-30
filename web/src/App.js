@@ -11,6 +11,7 @@ import Footer from "./Components/Footer/Footer";
 import Error from "./Components/Error/Error";
 import Book from "./Components/Book/Book";
 import LogOut from "./Components/LogOut/LogOut";
+import Car from "./Components/Car/Car";
 
 function App() {
     return (
@@ -25,6 +26,7 @@ function App() {
                 <Route path="/login" element={<LogIn/>}/>
                 <Route path="/logOut" element={<LogOut/>}/>
                 <Route path="/book-a-car" element={<Book/>}/>
+                <Route path="/car/:carId" element={<Car/>}/>
                 <Route path='*' element={<Error/>}/>
             </Routes>
             <Footer/>

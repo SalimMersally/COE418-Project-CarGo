@@ -1,32 +1,24 @@
-import {useContext, useEffect, useState} from "react";
-import {AppContext} from "../../StateProvider";
+import {useEffect, useState} from "react";
 import axios from "axios";
 import CarCard from "./CarCard";
 import {Box, Container, Grid} from "@chakra-ui/react";
 
 export default function Book() {
-    const [state] = useContext(AppContext);
     const [carList, setCartList] = useState([]);
 
     useEffect(() => {
-        if (state.isLogged) {
-            axios
-                .get("http://localhost:8080/api/car", {
-                    headers: {
-                        'Authorization': `Bearer ${state.userToken}`
-                    }
-                })
-                .then((res) => {
-                    setCartList(res.data);
-                });
-        }
-    }, [state.isLogged]);
+        axios
+            .get("http://localhost:8080/api/car")
+            .then((res) => {
+                setCartList(res.data);
+            });
+    }, []);
 
     return (
         <Box py={8}>
             <Container maxW="container.xl" textAlign="left" px="6">
                 <Grid templateColumns='repeat(3, 1fr)' gap={6}>
-                    {carList.map(car => <CarCard {...car} />)}
+                    {carList.map(car => <CarCard key={car.carId} {...car} />)}
                 </Grid>
             </Container>
         </Box>
