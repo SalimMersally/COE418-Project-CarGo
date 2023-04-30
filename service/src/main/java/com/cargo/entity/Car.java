@@ -19,7 +19,6 @@ public class Car {
     private String color;
     private int costPerDay;
     private String description;
-
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "userId", referencedColumnName = "userId")
     private User user;

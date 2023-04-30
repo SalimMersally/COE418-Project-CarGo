@@ -16,7 +16,7 @@ export default function CarCard(props) {
     }
 
     return (
-        <GridItem w='100%'>'
+        <GridItem w='100%'>
             <Link to={"/car/" + props.carId}>
                 <Card maxW='sm' _hover={{transform: "scale(1.05)"}}
                       _active={{boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px"}}>
