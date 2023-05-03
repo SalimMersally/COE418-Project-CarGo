@@ -1,13 +1,9 @@
-import {Box, Container, Image, Input, Tab, TabList, TabPanel, TabPanels, Tabs, Text} from "@chakra-ui/react";
-import React, {useContext, useState} from "react";
-import axios from "axios";
-import {AppContext} from "../../StateProvider";
-import UserInfo from "./UserInfo";
-import MyCars from "./MyCars";
-import MyBookings from "./MyBookings";
+import {Container, Tab, TabList, TabPanel, TabPanels, Tabs, Text} from "@chakra-ui/react";
+import React from "react";
+import MyCarsList from "./MyCarsList";
 import MyCarsBookings from "./MyCarsBookings";
 
-export default function Dashboard() {
+export default function MyCars() {
     // const [image, setImage] = useState();
     // const [state, dispatch] = useContext(AppContext);
 
@@ -32,28 +28,20 @@ export default function Dashboard() {
     return (
         <Container maxW="container.xl" textAlign="left" p="6">
             <Text fontFamily="roboto" fontSize="5xl" fontWeight="700">
-                MY DASHBOARD
+                MY CARS
             </Text>
             <Tabs>
                 <TabList>
-                    <Tab>Personal Information</Tab>
                     <Tab>My Cars</Tab>
-                    <Tab>My Booking</Tab>
                     <Tab>My Cars' Bookings</Tab>
                 </TabList>
 
                 <TabPanels>
                     <TabPanel>
-                        <UserInfo />
+                        <MyCarsList/>
                     </TabPanel>
                     <TabPanel>
-                        <MyCars />
-                    </TabPanel>
-                    <TabPanel>
-                        <MyBookings />
-                    </TabPanel>
-                    <TabPanel>
-                        <MyCarsBookings />
+                        <MyCarsBookings/>
                     </TabPanel>
                 </TabPanels>
             </Tabs>

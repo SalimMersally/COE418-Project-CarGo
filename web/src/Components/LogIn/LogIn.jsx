@@ -28,7 +28,7 @@ function LogIn() {
                 } else {
                     dispatch({ type: "SET_LOG", value: true });
                     dispatch({ type: "SET_TOKEN", value: res.data.jwtToken });
-                    navigate("/dashboard");
+                    navigate("/profile");
                 }
             });
     }

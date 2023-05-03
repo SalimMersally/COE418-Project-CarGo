@@ -85,9 +85,14 @@ function Navbar() {
                             _focus={{boxShadow: "transparent"}}
                         />
                         <MenuList>
-                            <Link to={"/dashboard"}>
+                            <Link to={"/profile"}>
                                 <MenuItem _hover={{bg: "#38a8ff"}} _active={{bg: "#0072C6"}}>
-                                    Dashboard
+                                    Profile
+                                </MenuItem>
+                            </Link>
+                            <Link to={"/my-cars"}>
+                                <MenuItem _hover={{bg: "#38a8ff"}} _active={{bg: "#0072C6"}}>
+                                    My Cars
                                 </MenuItem>
                             </Link>
                             <Link to={"/logout"}>
