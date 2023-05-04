@@ -19,11 +19,15 @@ repositories {
 }
 
 dependencies {
+
+
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-security:3.0.4")
 	implementation("org.springframework.boot:spring-boot-starter-validation:3.0.4")
 	implementation("io.jsonwebtoken:jjwt:0.9.1")
+	implementation("jakarta.mail:jakarta.mail-api:2.1.1")
+	implementation("org.springframework.boot:spring-boot-starter-mail:3.0.4")
 
 	implementation("io.temporal:temporal-sdk:1.18.2")
 	implementation("io.temporal:temporal-opentracing:1.18.2")
