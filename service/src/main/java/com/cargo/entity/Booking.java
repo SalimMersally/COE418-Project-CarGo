@@ -20,9 +20,4 @@ public class Booking {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "carId", referencedColumnName = "carId")
     private Car car;
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "addressId", referencedColumnName = "addressId")
-    private Address address;
-
-
 }

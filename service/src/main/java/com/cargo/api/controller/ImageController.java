@@ -18,8 +18,8 @@ public class ImageController {
     private ImageService imageDataService;
 
     @PostMapping
-    public ResponseEntity<String> uploadImage(@RequestParam("image") MultipartFile file) throws IOException {
-        String response = imageDataService.uploadImage(file);
+    public ResponseEntity<String> uploadImage(@RequestParam("image") MultipartFile file, @RequestParam("name") String name) throws IOException {
+        String response = imageDataService.uploadImage(file, name);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

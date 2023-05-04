@@ -1,9 +1,22 @@
 import {Container, Tab, TabList, TabPanel, TabPanels, Tabs, Text} from "@chakra-ui/react";
-import React from "react";
+import React, {useContext, useEffect} from "react";
 import MyCarsList from "./MyCarsList";
 import MyCarsBookings from "./MyCarsBookings";
+import {AppContext} from "../../StateProvider";
+import {useNavigate} from "react-router-dom";
+
+import "./MyCars.css"
 
 export default function MyCars() {
+    const [state,] = useContext(AppContext);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!state.isLogged) {
+            navigate("/login");
+        }
+    }, []);
+
     // const [image, setImage] = useState();
     // const [state, dispatch] = useContext(AppContext);
 

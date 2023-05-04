@@ -1,9 +1,19 @@
 import {Container, Tab, TabList, TabPanel, TabPanels, Tabs, Text} from "@chakra-ui/react";
-import React from "react";
+import React, {useContext, useEffect} from "react";
 import UserInfo from "./UserInfo";
 import MyBookings from "./MyBookings";
+import {useNavigate} from "react-router-dom";
+import {AppContext} from "../../StateProvider";
 
 export default function Profile() {
+    const [state,] = useContext(AppContext);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if(! state.isLogged) {
+            navigate("/login");
+        }
+    }, []);
 
     return (
         <Container maxW="container.xl" textAlign="left" p="6">
