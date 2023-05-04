@@ -42,6 +42,17 @@ function Navbar() {
         dispatch({type: "SET_TOKEN", value: ""});
     }
 
+    function capitalizeFirstLetters(str) {
+        let words = str.split(" ");
+
+        let capitalizedWords = words.map(function (word) {
+            return word.charAt(0).toUpperCase() + word.slice(1);
+        });
+
+        return capitalizedWords.join(" ");
+    }
+
+
     return (<Flex as="header" zIndex="9999" w="100%" bg="black" px="10" py={2} justifyContent={"space-between"}>
         <Flex>
             <Center pr={10}>
@@ -73,7 +84,7 @@ function Navbar() {
             {state.isLogged ?
                 <Flex alignItems={"center"}>
                     <Text color={"white"} pr={4} fontSize={'xl'}
-                          fontWeight={400}>{user?.firstName + " " + user?.lastName}</Text>
+                          fontWeight={400}>{capitalizeFirstLetters(user?.firstName + " " + user?.lastName)}</Text>
                     <Menu>
                         <MenuButton
                             as={IconButton}
