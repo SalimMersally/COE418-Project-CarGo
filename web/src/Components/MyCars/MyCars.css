@@ -6,3 +6,7 @@
     opacity: 1;
     transform: scale(1.1);
 }
+
+.trashIcon:hover {
+    transform: scale(1.1);
+}

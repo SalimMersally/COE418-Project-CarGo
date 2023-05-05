@@ -21,7 +21,7 @@ public class Car {
     private String location;
     private int costPerDay;
     private String description;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "userId", referencedColumnName = "userId")
     private User user;
     @OneToMany(mappedBy = "car", fetch = FetchType.LAZY,
