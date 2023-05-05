@@ -17,14 +17,13 @@ public class Car {
     private String model;
     private Integer year;
     private String color;
+    private String plateNumber;
+    private String location;
     private int costPerDay;
     private String description;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "userId", referencedColumnName = "userId")
     private User user;
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "addressId", referencedColumnName = "addressId")
-    private Address address;
     @OneToMany(mappedBy = "car", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
     private List<Booking> booking;

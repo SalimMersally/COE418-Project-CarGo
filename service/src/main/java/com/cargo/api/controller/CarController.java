@@ -2,9 +2,13 @@ package com.cargo.api.controller;
 
 import com.cargo.api.response.CarResponse;
 import com.cargo.entity.Car;
+import com.cargo.entity.User;
 import com.cargo.repository.CarRepository;
+import com.cargo.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,11 +20,24 @@ import java.util.List;
 @AllArgsConstructor
 public class CarController {
     private CarRepository carRepository;
+    private UserRepository userRepository;
 
     @GetMapping()
     public ResponseEntity<List<CarResponse>> getAllCars() {
         List<Car> carList = carRepository.findAll();
 
+        List<CarResponse> carResponseList = carList.stream().map(this::getResponseFromCar).toList();
+
+        return ResponseEntity.ok(carResponseList);
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity<List<CarResponse>> getCarsByUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        User user = userRepository.findByEmail(email);
+
+        List<Car> carList = carRepository.getCarByUser(user);
         List<CarResponse> carResponseList = carList.stream().map(this::getResponseFromCar).toList();
 
         return ResponseEntity.ok(carResponseList);
@@ -42,6 +59,11 @@ public class CarController {
 
     @PostMapping()
     public ResponseEntity<CarResponse> createCar(@Validated @RequestBody Car receivedCar) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        User user = userRepository.findByEmail(email);
+
+        receivedCar.setUser(user);
         Car car = carRepository.save(receivedCar);
 
         CarResponse response = getResponseFromCar(car);
@@ -59,7 +81,9 @@ public class CarController {
             car.setYear(carDetails.getYear());
             car.setColor(carDetails.getColor());
             car.setUser(carDetails.getUser());
-            car.setAddress(carDetails.getAddress());
+            car.setDescription(carDetails.getDescription());
+            car.setPlateNumber(carDetails.getPlateNumber());
+            car.setCostPerDay(carDetails.getCostPerDay());
             updatedCar = carRepository.save(car);
         } else {
             return ResponseEntity.notFound().build();
@@ -83,6 +107,15 @@ public class CarController {
     }
 
     private CarResponse getResponseFromCar(Car car) {
-        return new CarResponse(car.getCarId(), car.getMake(), car.getModel(), car.getYear(), car.getColor(), car.getCostPerDay(), car.getDescription());
+        return new CarResponse(car.getCarId(),
+                car.getMake(),
+                car.getModel(),
+                car.getYear(),
+                car.getColor(),
+                car.getPlateNumber(),
+                car.getLocation(),
+                car.getCostPerDay(),
+                car.getDescription(),
+                car.getUser().getFirstName() + " " + car.getUser().getLastName());
     }
 }

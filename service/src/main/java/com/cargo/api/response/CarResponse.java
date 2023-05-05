@@ -13,6 +13,9 @@ public class CarResponse {
     private String model;
     private Integer year;
     private String color;
+    private String plateNumber;
+    private String location;
     private int costPerDay;
     private String description;
+    private String owner;
 }

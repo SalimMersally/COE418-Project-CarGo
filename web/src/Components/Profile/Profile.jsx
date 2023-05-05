@@ -2,8 +2,18 @@ import {Container, Tab, TabList, TabPanel, TabPanels, Tabs, Text,Box} from "@cha
 import React from "react";
 import UserInfo from "./UserInfo";
 import MyBookings from "./MyBookings";
+import {useNavigate} from "react-router-dom";
+import {AppContext} from "../../StateProvider";
 
 export default function Profile() {
+    const [state,] = useContext(AppContext);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if(! state.isLogged) {
+            navigate("/login");
+        }
+    }, []);
 
     return (
         <Container maxW="container.xl" textAlign="left" p="6">

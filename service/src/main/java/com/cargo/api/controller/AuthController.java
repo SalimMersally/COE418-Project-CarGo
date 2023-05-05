@@ -8,6 +8,8 @@ import com.cargo.repository.UserRepository;
 import com.cargo.entity.User;
 import com.cargo.security.jwt.JwtTokenUtil;
 import com.cargo.security.jwt.JwtUserDetailsService;
+import com.cargo.util.EmailService;
+import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -30,6 +32,7 @@ public class AuthController {
     private JwtUserDetailsService userDetailsService;
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
+    private EmailService emailService;
 
     @GetMapping()
     public ResponseEntity<UserDataResponse> getUserData() {
@@ -43,12 +46,16 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<SigninResponse> signIn(@RequestBody SigninRequest signinRequest) {
+    public ResponseEntity<?> signIn(@RequestBody SigninRequest signinRequest) {
         String email = signinRequest.getEmail();
         String password = signinRequest.getPassword();
 
-        Authentication userAuthentication = new UsernamePasswordAuthenticationToken(email, password);
-        authenticationManager.authenticate(userAuthentication);
+        try {
+            Authentication userAuthentication = new UsernamePasswordAuthenticationToken(email, password);
+            authenticationManager.authenticate(userAuthentication);
+        } catch (Exception e) {
+            return ResponseEntity.status(401).body("Wrong Email or password");
+        }
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(signinRequest.getEmail());
         String token = jwtTokenUtil.generateToken(userDetails);
@@ -72,6 +79,12 @@ public class AuthController {
                 new ArrayList<>(),
                 new ArrayList<>());
         userRepository.save(user);
+
+        try {
+            emailService.sendEmail(signupRequest.getEmail(),"Welcome to CarGo","Welcome ;) now you can enter our amazing world");
+        } catch (Exception e) {
+            System.out.println("Email is not valid");
+        }
 
         return ResponseEntity.ok("User registered successfully!");
     }

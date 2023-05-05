@@ -47,7 +47,6 @@ public class BookingController {
             booking.setEndDate(bookingDetails.getEndDate());
             booking.setStartDate(bookingDetails.getStartDate());
             booking.setUser(bookingDetails.getUser());
-            booking.setAddress(bookingDetails.getAddress());
             booking.setCar(bookingDetails.getCar());
             updatedBooking = bookingRepository.save(booking);
         } else {

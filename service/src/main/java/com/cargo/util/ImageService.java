@@ -16,9 +16,9 @@ import java.util.Optional;
 public class ImageService {
     private ImageRepository imageRepository;
 
-    public String uploadImage(MultipartFile file) throws IOException {
+    public String uploadImage(MultipartFile file, String name) throws IOException {
         imageRepository.save(Image.builder()
-                .name(file.getOriginalFilename())
+                .name(name)
                 .imageData(ImageUtil.compressImage(file.getBytes())).build());
 
         return "Image uploaded successfully: " + file.getOriginalFilename();
