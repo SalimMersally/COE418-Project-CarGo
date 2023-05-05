@@ -17,9 +17,7 @@ public class EmailController {
     private EmailService es;
     @GetMapping("/email")
     public ResponseEntity<String> sendEmail() throws MessagingException {
-        es.sendEmail("ahmad.alsayedalsabsabi@lau.edu","CarGo Account","Welcome ;) now you can enter our amazing world");
+        es.sendEmail("salim.almersally@lau.edu","CarGo Account","Welcome ;) now you can enter our amazing world");
         return ResponseEntity.ok("Email Sent");
-
     }
-
 }
