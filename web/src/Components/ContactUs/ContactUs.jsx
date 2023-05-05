@@ -25,7 +25,12 @@ export default function ContactUs() {
                         <Message/>
                     </Flex>
                 </Box>
-                <Map/>
+                <Box mb={4}>
+                    <Text fontFamily="roboto" fontSize="xl" fontWeight="800" mb="3" mt={8}>
+                        Our Location:
+                    </Text>
+                    <Map/>
+                </Box>
             </Container>
         </Box>
     );
