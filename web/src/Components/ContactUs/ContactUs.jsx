@@ -4,6 +4,7 @@ import Message from "./Message";
 import Info from "./Info";
 
 import contactus from "../../assets/contactus.png";
+import Map from "../Map/Map"
 
 export default function ContactUs() {
     return (
@@ -24,6 +25,7 @@ export default function ContactUs() {
                         <Message/>
                     </Flex>
                 </Box>
+                <Map/>
             </Container>
         </Box>
     );
