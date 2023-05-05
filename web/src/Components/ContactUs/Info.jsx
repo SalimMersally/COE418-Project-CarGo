@@ -11,7 +11,7 @@ import twitter from "../../assets/twitter.png";
 
 function Info() {
     return (
-        <Box w="30%">
+        <Box w="100%">
             <Text fontFamily="roboto" fontSize="4xl" fontWeight="800" my="3">
                 Available 24/7
             </Text>
@@ -19,7 +19,7 @@ function Info() {
                 fontFamily="roboto"
                 fontSize="sm"
                 fontWeight="300"
-                my={8}>
+                my={3}>
                 Our website is available 24/7 for all companies and clients. You can use our website and pick up a a car
                 at anytime, anywhere. If you have any question or require a certain service feel free to email us
                 anytime. We will reply as soon as possible.
@@ -54,21 +54,23 @@ function Info() {
                     cargo.customer.help@gmail.com
                 </Text>
             </Flex>
-            <Text fontFamily="roboto" fontSize="xl" fontWeight="800" mb="3" mt={8}>
-                Social Media:
+            
+            <Flex py="6" alignItems="center">
+            <Text fontFamily="roboto" fontSize="lg" fontWeight="800" mb="1" mt={4}>
+                Social Media: &nbsp;&nbsp;&nbsp;&nbsp;
             </Text>
-            <Flex py="2" alignItems="center">
+            
                 <Box mr="4">
                     <a href="https://www.facebook.com" target="_blank" rel="noreferrer">
-                        <Image src={facebook} w="8" h="8"/>
+                        <Image src={facebook} w="5" h="5"/>
                     </a></Box>
                 <Box mx="4">
                     <a href="https://www.instagram.com" target="_blank" rel="noreferrer">
-                        <Image src={instagram} w="8" h="8"/>
+                        <Image src={instagram} w="5" h="5"/>
                     </a></Box>
                 <Box ml="4">
                     <a href="https://www.twitter.com" target="_blank" rel="noreferrer">
-                        <Image src={twitter} w="8"/>
+                        <Image src={twitter} w="5"/>
                     </a>
                 </Box>
             </Flex>

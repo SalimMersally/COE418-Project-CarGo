@@ -21,16 +21,11 @@ export default function ContactUs() {
             <Container maxW="container.xl" textAlign="left" px="6">
                 <Box mx="10" my={4}>
                     <Flex justifyContent={"space-between"}>
-                        <Info/>
+                        <Container><Info/><Box align= "left"><Map/></Box></Container>
                         <Message/>
                     </Flex>
                 </Box>
-                <Box mb={4}>
-                    <Text fontFamily="roboto" fontSize="xl" fontWeight="800" mb="3" mt={8}>
-                        Our Location:
-                    </Text>
-                    <Map/>
-                </Box>
+              
             </Container>
         </Box>
     );
