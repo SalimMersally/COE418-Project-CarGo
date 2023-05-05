@@ -1,117 +1,90 @@
-import React from "react";
-import { Box, Flex, Image, Container, Text } from "@chakra-ui/react";
-import { CloseButton } from "@chakra-ui/react";
+import React, {useContext, useEffect, useState} from "react";
+import {Box, Container, Flex, Image, Text} from "@chakra-ui/react";
 
 // Components
-import InfoModal from "./InfoModal";
-
 // Images
-import userProfile from "./../../assets/userProfile.png";
-import name from "./../../assets/name.png";
 import emailPic from "./../../assets/email.png";
 import phone from "./../../assets/phone.png";
-import logout from "./../../assets/logout.png";
+import {FaUserAlt} from "react-icons/fa";
+import {AppContext} from "../../StateProvider";
+import axios from "axios";
+import EditUserModal from "./EditUserModal";
 
 function Info() {
-  const fName = "FName";
-  const lName = "LName";
-  const username = "UserName";
-  const phoneNB = "+961 99 999 999";
-  const email = "fname.lname@gmail.com";
+    const [state] = useContext(AppContext);
+    const [user, setUser] = useState({number: 0});
 
-  return (
-    <Box w="100%" bg="white" alignSelf="flex-stretch" py="10">
-      <Container maxW="container.sm">
-        <Flex direction= "column" >
-        
-        <Image src={userProfile} w="50%"  py="2" mx="auto"/>
-        
-        <Box >
+    useEffect(() => {
+        return () => {
+            getUserData()
+        };
+    }, []);
 
-        <Flex direction="column" justifyContent="Left" w="100%">
-        <Text
-            align= "center"
-            fontSize="3xl"
-            fontFamily="roboto"
-            fontWeight="700"
-            color="black"
-            py="2"
-          >
-            {fName} {lName}
-          </Text>
-          <InfoModal />
-          
-          
-          <Flex mx="6" pt="4">
-            <Image src={name} w="6" h="6" mr="6" />
-            <Box w="85%">
-              <Text
-                fontSize="xl"
-                fontFamily="roboto"
-                fontWeight="400"
-                color="black"
-                textAlign="left"
-                pb="2"
-              >
-                {username}
-              </Text>
-              <hr className="info" />
-            </Box>
-          </Flex>
-        </Flex>
-        <Flex mx="6" pt="4">
-          <Image src={phone} w="6" h="6" mr="6" />
-          <Box w="85%">
-            <Text
-             
-              fontSize="xl"
-              fontFamily="roboto"
-              fontWeight="400"
-              color="black"
-              textAlign="left"
-              pb="2"
-            >
-              {phoneNB}
-            </Text>
-            <hr className="info" />
-          </Box>
-        </Flex>
-        <Flex mx="6" pt="4">
-          <Image src={emailPic} w="6" h="6" mr="6" />
-          <Box w="85%">
-            <Text
-              
-              fontSize="xl"
-              fontFamily="roboto"
-              fontWeight="400"
-              color="Black"
-              textAlign="left"
-              pb="2"
-            >
-              {email}
-            </Text>
-            <hr className="info" />
-          </Box>
-        </Flex>
-        <Flex mx="6" pt="4">
-          <Image src={logout} w="6" h="6" mr="6" />
-          <Box w="85%">
-            <Text
-              fontSize="xl"
-              fontFamily="roboto"
-              fontWeight="400"
-              color="Black"
-              textAlign="left"
-              pb="2"
-            >
-              LOG OUT
-            </Text>
-            <hr className="info" />
-          </Box>
-        </Flex></Box></Flex>
-      </Container>
-    </Box>
-  );
+    function getUserData() {
+        axios.get("http://localhost:8080/api/auth", {
+            headers: {
+                'Authorization': `Bearer ${state.userToken}`
+            }
+        }).then((res) => {
+            setUser(res.data);
+        });
+    }
+
+    return (
+        <Box w="100%" bg="white" alignSelf="flex-stretch" py="10">
+            <Container maxW="container.sm">
+                <Flex flexDirection={"column"}>
+                    <Flex flexDirection={"column"} alignItems={"center"}>
+                        <FaUserAlt color={"#0072C6"} size={100}/>
+                        <Text
+                            align="center"
+                            fontSize="3xl"
+                            fontFamily="roboto"
+                            fontWeight="700"
+                            color="black"
+                            py="2"
+                        >
+                            {user.firstName} {user.lastName}
+                        </Text>
+                    </Flex>
+                    <Flex mx="6" pt="4">
+                        <Image src={emailPic} w="6" h="6" mr="6"/>
+                        <Box w="85%">
+                            <Text
+                                fontSize="xl"
+                                fontFamily="roboto"
+                                fontWeight="400"
+                                color="Black"
+                                textAlign="left"
+                                pb="2"
+                            >
+                                {user.email}
+                            </Text>
+                            <hr className="info"/>
+                        </Box>
+                    </Flex>
+                    <Flex mx="6" pt="4">
+                        <Image src={phone} w="6" h="6" mr="6"/>
+                        <Box w="85%">
+                            <Text
+
+                                fontSize="xl"
+                                fontFamily="roboto"
+                                fontWeight="400"
+                                color="black"
+                                textAlign="left"
+                                pb="2"
+                            >
+                                {user.phoneNumber ? user.phoneNumber.toString().substring(0, 2) + " " + user.phoneNumber.toString().substring(2, 5) + " " + user.phoneNumber.toString().substring(5, 8): ""}
+                            </Text>
+                            <hr className="info"/>
+                        </Box>
+                    </Flex>
+                    <EditUserModal getUserData={getUserData}/>
+                </Flex>
+            </Container>
+        </Box>
+    );
 }
 
 export default Info;

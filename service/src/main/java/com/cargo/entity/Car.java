@@ -28,9 +28,6 @@ public class Car {
     @OneToMany(mappedBy = "car", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
     private List<Booking> booking;
-    @OneToMany(mappedBy = "car", fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL)
-    private List<Review> review;
 }
 
 

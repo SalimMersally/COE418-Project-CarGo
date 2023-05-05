@@ -82,7 +82,6 @@ public class BookingController {
         String emailToOwner = owner.getEmail();
         Booking createdBooking = bookingRepository.save(booking);
 
-
         String message = "Your booking had been confirmed for the " + carName + "\nPlease wait for owner confirmation";
 
         new Thread(() -> {
@@ -136,7 +135,7 @@ public class BookingController {
         } else {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(booking);
+        return ResponseEntity.ok("Deleted successfully");
     }
 
     public BookingResponse getBookingResponse(Booking booking) {

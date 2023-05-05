@@ -1,68 +1,101 @@
-import React from "react";
-import { Box, Flex, Image, Text, Tooltip } from "@chakra-ui/react";
-import EditModal from "./EditModal"
+import React, {useContext, useEffect, useState} from "react";
+import {Box, Card, CardBody, Flex, Text} from "@chakra-ui/react";
+import axios from "axios";
+import {AppContext} from "../../StateProvider";
+import {GiCancel, GiCheckMark} from "react-icons/gi";
+import {BiTimeFive} from "react-icons/bi";
+import DeleteBookingModal from "./DeleteBookingModal";
 
+export default function BookingItem(props) {
+    const bookingId = props.booking.bookingId;
+    const bookingPrice = props.booking.bookingPrice;
+    const carId = props.booking.carId;
+    const startDate = props.booking.startDate;
+    const endDate = props.booking.endDate;
+    const userEmail = props.booking.userEmail;
+    const userResponse = props.booking.userResponse;
 
-// Components
-import DeleteModal from "./DeleteModal";
+    const [car, setCar] = useState({});
+    const [state] = useContext(AppContext);
 
-function BookingItem(props) {
-  const from = props.info.from;
-  const to = props.info.to;
-  const time = props.info.time;
-  const compName = props.info.compName;
-  const driverName = props.info.driverName;
-  const carModel = props.info.carModel;
-  const compNb = props.info.compNb;
-  const driverNb = props.info.driverNb;
-  const carNb = props.info.carNb;
+    useEffect(() => {
+        fetchCar()
+    }, []);
 
-  let sx;
-  if (props.isHistory) {
-    sx = `rgba(196, 196, 196, ${props.opacity})`;
-  } else {
-    sx = `rgba(	0, 114, 198, ${props.opacity})`;
-  }
+    function fetchCar() {
+        axios
+            .get("http://localhost:8080/api/car/" + carId, {
+                headers: {
+                    'Authorization': `Bearer ${state.userToken}`
+                }
+            })
+            .then((res) => {
+                setCar(res.data)
+            });
+    }
 
-  return (
-    <Flex
-      w="100%"
-      justifyContent="space-between"
-      textAlign="left"
-      p="4"
-      my="2"
-      sx={{
-        backgroundColor: sx,
-      }}
-    >
-      <Box  w="45%" verticalAlign="center">
-        <Text fontFamily="roboto" fontWeight="600" fontSize="lg">
-          From: {from}
-        </Text>
-        <Text fontFamily="roboto" fontWeight="600" fontSize="lg">
-          To: {to}
-        </Text>
-      </Box>
-      <Box w="45%">
-        <Text fontFamily="roboto" fontWeight="600" fontSize="md">
-          Car Id: {compName}
-        </Text>
-        <Text fontFamily="roboto" fontWeight="600" fontSize="md">
-          Car Model: {carModel}
-        </Text>
-        <Text fontFamily="roboto" fontWeight="600" fontSize="md">
-          Plate Nb: {carNb}
-        </Text>
-        <Text fontFamily="roboto" fontWeight="600" fontSize="md">
-          Booking Time: {driverNb}
-        </Text>
-      </Box>
-      <Flex w="10%" justifyContent="flex-end" alignItems="center">
-        <EditModal/>
-        <DeleteModal />
-      </Flex>
-    </Flex>
-  );
+    function capitalizeFirstLetters(str) {
+        let words = str.split(" ");
+
+        let capitalizedWords = words.map(function (word) {
+            return word.charAt(0).toUpperCase() + word.slice(1);
+        });
+
+        return capitalizedWords.join(" ");
+    }
+
+    function getIcon() {
+        if (userResponse === "accepted") {
+            return <GiCheckMark color={"#32CD32"} size={30}/>;
+        } else if (userResponse === "rejected") {
+            return <GiCancel color={"#ff1111"} size={30}/>;
+        } else {
+            return <BiTimeFive color={"#00538d"} size={30}/>
+        }
+    }
+
+    return (<Card my={2}>
+        <CardBody>
+            <Flex
+                justifyContent="space-between"
+                textAlign="left"
+            >
+                <Box w={"30%"}>
+                    <Text fontFamily="roboto" fontWeight="400" fontSize="sm">
+                        <b>From:</b> {startDate}
+                    </Text>
+                    <Text fontFamily="roboto" fontWeight="400" fontSize="sm">
+                        <b>To:</b> {endDate}
+                    </Text>
+                    <Text fontFamily="roboto" fontWeight="400" fontSize="sm">
+                        <b>Owner Email:</b> {userEmail}
+                    </Text>
+                </Box>
+                <Box w={"30%"}>
+                    <Text fontFamily="roboto" fontWeight="400" fontSize="sm">
+                        <b>Car:</b> {capitalizeFirstLetters(car.make + " " + car.model)} #{car.year}
+                    </Text>
+                    <Text fontFamily="roboto" fontWeight="400" fontSize="sm">
+                        <b>Color:</b> {car.color}
+                    </Text>
+                    <Text fontFamily="roboto" fontWeight="400" fontSize="sm">
+                        <b>Cost:</b> ${bookingPrice}
+                    </Text>
+                </Box>
+                <Box w={"30%"}>
+                    <Flex h={"100%"} alignItems={"center"} justifyContent={"right"} mr="2">
+                        {getIcon()}
+                        <Text fontFamily="roboto" fontWeight="400" fontSize="sm" ml={"2"}>
+                            <b>{userResponse}</b>
+                        </Text>
+                    </Flex>
+                </Box>
+                <Box w={"10%"}>
+                    <Flex h={"100%"} alignItems={"center"} justifyContent={"right"} mr="2">
+                        <DeleteBookingModal bookingId={bookingId} getBookings={props.getBookings}/>
+                    </Flex>
+                </Box>
+            </Flex>
+        </CardBody>
+    </Card>);
 }
-
-export default BookingItem;

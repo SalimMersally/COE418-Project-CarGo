@@ -1,5 +1,6 @@
 package com.cargo.api.controller;
 
+import com.cargo.api.request.EditUserRequest;
 import com.cargo.api.request.SigninRequest;
 import com.cargo.api.request.SignupRequest;
 import com.cargo.api.response.SigninResponse;
@@ -44,6 +45,20 @@ public class AuthController {
         return ResponseEntity.ok(userDataResponse);
     }
 
+    @PutMapping()
+    public ResponseEntity<String> editUserData(@RequestBody EditUserRequest request) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+
+        User user = userRepository.findByEmail(email);
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+        user.setPhoneNumber(request.getPhoneNumber());
+        userRepository.save(user);
+
+        return ResponseEntity.ok("User updated");
+    }
+
     @PostMapping("/signin")
     public ResponseEntity<?> signIn(@RequestBody SigninRequest signinRequest) {
         String email = signinRequest.getEmail();
@@ -74,7 +89,6 @@ public class AuthController {
                 signupRequest.getFirstName(),
                 signupRequest.getLastName(),
                 signupRequest.getPhoneNumber(),
-                new ArrayList<>(),
                 new ArrayList<>(),
                 new ArrayList<>());
         userRepository.save(user);
