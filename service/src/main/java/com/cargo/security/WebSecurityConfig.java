@@ -29,7 +29,7 @@ public class WebSecurityConfig {
         http.csrf().disable().httpBasic().and()
                 .authorizeHttpRequests()
                 .requestMatchers(HttpMethod.POST, "api/auth/signin", "api/auth/signup").permitAll()
-                .requestMatchers(HttpMethod.GET, "api/car", "api/car/{carId}").permitAll()
+                .requestMatchers(HttpMethod.GET, "api/car", "api/car/{carId}", "/api/image/{name}").permitAll()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .anyRequest().authenticated()
                 .and().exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)

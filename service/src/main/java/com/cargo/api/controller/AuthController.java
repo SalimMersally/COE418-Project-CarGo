@@ -4,12 +4,11 @@ import com.cargo.api.request.SigninRequest;
 import com.cargo.api.request.SignupRequest;
 import com.cargo.api.response.SigninResponse;
 import com.cargo.api.response.UserDataResponse;
-import com.cargo.repository.UserRepository;
 import com.cargo.entity.User;
+import com.cargo.repository.UserRepository;
 import com.cargo.security.jwt.JwtTokenUtil;
 import com.cargo.security.jwt.JwtUserDetailsService;
 import com.cargo.util.EmailService;
-import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -80,11 +79,13 @@ public class AuthController {
                 new ArrayList<>());
         userRepository.save(user);
 
-        try {
-            emailService.sendEmail(signupRequest.getEmail(),"Welcome to CarGo","Welcome ;) now you can enter our amazing world");
-        } catch (Exception e) {
-            System.out.println("Email is not valid");
-        }
+        new Thread(() -> {
+            try {
+                emailService.sendEmail(signupRequest.getEmail(), "Welcome to CarGo", "Welcome ;) now you can enter our amazing world");
+            } catch (Exception e) {
+                System.out.println("Email is not valid");
+            }
+        }).start();
 
         return ResponseEntity.ok("User registered successfully!");
     }

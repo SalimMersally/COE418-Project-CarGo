@@ -51,13 +51,13 @@ export default function AddCarModal(props) {
                     location: locationRef.current.value,
                     costPerDay: costPerDayRef.current.value,
                     description: descriptionRef.current.value,
-                },{
+                }, {
                     headers: {
                         'Authorization': `Bearer ${state.userToken}`
                     }
                 })
                 .then((res) => {
-                    if(res.status === 200) {
+                    if (res.status === 200) {
                         addImage(image, res.data.carId);
                         onClose();
                     }
@@ -84,26 +84,18 @@ export default function AddCarModal(props) {
 
     function addImage(imageData, carId) {
         if (state.isLogged) {
-            axios
-                .get("http://localhost:8080/api/auth", {
-                    headers: {
-                        'Authorization': `Bearer ${state.userToken}`
-                    }
-                })
-                .then((res) => {
-                    let data = new FormData();
-                    data.append('image', imageData);
-                    data.append("name", res.data?.email + carId.toString() + ".png")
+            let data = new FormData();
+            data.append('image', imageData);
+            data.append("carId", carId)
 
-                    axios.post("http://localhost:8080/api/image", data, {
-                        headers: {
-                            'Content-Type': `multipart/form-data; boundary=${data._boundary}`,
-                            'Authorization': `Bearer ${state.userToken}`
-                        }
-                    }).then((res) => {
-                        props.fetchCars();
-                    });
-                });
+            axios.post("http://localhost:8080/api/image", data, {
+                headers: {
+                    'Content-Type': `multipart/form-data; boundary=${data._boundary}`,
+                    'Authorization': `Bearer ${state.userToken}`
+                }
+            }).then((res) => {
+                props.fetchCars();
+            });
         }
     }
 
@@ -111,7 +103,7 @@ export default function AddCarModal(props) {
         <>
             <Tooltip hasArrow label="Add a new Car" bg="gray.400">
                 <Box as="button">
-                    <MdAddCircle size={70} onClick={onOpen} color={"#0072C6"} className={"addButton"} />
+                    <MdAddCircle size={70} onClick={onOpen} color={"#0072C6"} className={"addButton"}/>
                 </Box>
             </Tooltip>
             {isOpen ?

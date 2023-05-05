@@ -1,13 +1,14 @@
 import React, {useContext, useEffect, useRef, useState} from "react";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
 import {AppContext} from "../../StateProvider";
 import {Box, Button, Container, Divider, Flex, Image, Input, Text} from "@chakra-ui/react";
-import carImage from "./../../assets/car.png"
-import {AiFillStar} from "react-icons/ai";
+import {AiFillStar, AiOutlineBgColors} from "react-icons/ai";
+import {MdConfirmationNumber} from "react-icons/md";
+import {FaUserAlt} from "react-icons/fa";
+import {HiLocationMarker} from "react-icons/hi";
 
 export default function Car() {
-    const [state] = useContext(AppContext)
     const {carId} = useParams()
     const [car, setCar] = useState([]);
     const startDateRef = useRef();
@@ -15,12 +16,23 @@ export default function Car() {
     const [totalCost, setTotalCost] = useState(NaN);
 
     const [error, setError] = useState("");
+    const [image, setImage] = useState();
+    const [state] = useContext(AppContext);
+    const navigate = useNavigate();
 
     useEffect(() => {
         axios
             .get("http://localhost:8080/api/car/" + carId)
             .then((res) => {
                 setCar(res.data);
+                axios
+                    .get("http://localhost:8080/api/image/" + res.data.imageName, {
+                        responseType: 'blob',
+                    })
+                    .then((res) => {
+                        const imageObjectURL = URL.createObjectURL(res.data);
+                        setImage(imageObjectURL);
+                    });
             });
     }, []);
 
@@ -55,6 +67,26 @@ export default function Car() {
                 setError("End date should be after start date");
             } else {
                 setError("");
+                if (!state.isLogged) {
+                    navigate("/login");
+                } else {
+                    axios
+                        .post("http://localhost:8080/api/booking", {
+                            startDate: startDateRef.current.value,
+                            endDate: endDateRef.current.value,
+                            bookingPrice: totalCost,
+                            carId: carId,
+                        }, {
+                            headers: {
+                                'Authorization': `Bearer ${state.userToken}`
+                            }
+                        })
+                        .then((res) => {
+                            if (res.status === 200) {
+                                navigate("/book-a-car");
+                            }
+                        });
+                }
             }
         }
     }
@@ -62,7 +94,7 @@ export default function Car() {
     return (
         <Box>
             <Flex justifyContent={"center"}>
-                <Image src={carImage} h={"50vh"}/>
+                <Image src={image} h={"50vh"}/>
             </Flex>
             <Container maxW="container.xl" textAlign="left" px="6">
                 <Box mx="10" my={4}>
@@ -71,6 +103,39 @@ export default function Car() {
                             <Text fontFamily="roboto" fontSize="5xl" fontWeight="700" py={2}>
                                 {capitalizeFirstLetters(car.make + " " + car.model)} #{car.year}
                             </Text>
+                            <Text fontFamily="roboto" fontSize="2xl" fontWeight="700" py={2}>
+                                Information:
+                            </Text>
+                            <Box ml={4}>
+                                <Flex alignItems={"center"} my={2}>
+                                    <AiOutlineBgColors color={"#0072C6"} size={25}/>
+                                    <Text fontFamily="roboto" fontSize="l" fontWeight="400" ml={2}>
+                                        <b>Color: </b>
+                                        {car.color}
+                                    </Text>
+                                </Flex>
+                                <Flex alignItems={"center"} my={2}>
+                                    <MdConfirmationNumber color={"#0072C6"} size={25}/>
+                                    <Text fontFamily="roboto" fontSize="l" fontWeight="400" ml={2}>
+                                        <b>Plate Number: </b>
+                                        {car.plateNumber}
+                                    </Text>
+                                </Flex>
+                                <Flex alignItems={"center"} my={2}>
+                                    <FaUserAlt color={"#0072C6"} size={25}/>
+                                    <Text fontFamily="roboto" fontSize="l" fontWeight="400" ml={2}>
+                                        <b>Owner: </b>
+                                        {car.owner}
+                                    </Text>
+                                </Flex>
+                                <Flex alignItems={"center"} my={2}>
+                                    <HiLocationMarker color={"#0072C6"} size={25}/>
+                                    <Text fontFamily="roboto" fontSize="l" fontWeight="400" ml={2}>
+                                        <b>Location: </b>
+                                        {car.location}
+                                    </Text>
+                                </Flex>
+                            </Box>
                             <Text fontFamily="roboto" fontSize="2xl" fontWeight="700" py={2}>
                                 Description:
                             </Text>

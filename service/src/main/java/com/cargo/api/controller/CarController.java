@@ -116,6 +116,7 @@ public class CarController {
                 car.getLocation(),
                 car.getCostPerDay(),
                 car.getDescription(),
-                car.getUser().getFirstName() + " " + car.getUser().getLastName());
+                car.getUser().getFirstName() + " " + car.getUser().getLastName(),
+                car.getImageName());
     }
 }

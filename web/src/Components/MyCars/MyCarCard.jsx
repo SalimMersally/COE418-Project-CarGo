@@ -13,27 +13,16 @@ export default function MyCarCard(props) {
     useEffect(() => {
         if (state.isLogged) {
             axios
-                .get("http://localhost:8080/api/auth", {
+                .get("http://localhost:8080/api/image/" + props.imageName, {
                     headers: {
                         'Authorization': `Bearer ${state.userToken}`
-                    }
+                    },
+                    responseType: 'blob',
                 })
                 .then((res) => {
-                    // console.log(res.data?.email + props.carId.toString() + ".png")
-                    const imageName = res.data?.email + props.carId.toString() + ".png"
-
-                    axios
-                        .get("http://localhost:8080/api/image/" + imageName, {
-                            headers: {
-                                'Authorization': `Bearer ${state.userToken}`
-                            },
-                            responseType: 'blob',
-                        })
-                        .then((res) => {
-                            // console.log(res)
-                            const imageObjectURL = URL.createObjectURL(res.data);
-                            setImage(imageObjectURL);
-                        });
+                    // console.log(res)
+                    const imageObjectURL = URL.createObjectURL(res.data);
+                    setImage(imageObjectURL);
                 });
         }
     }, []);
