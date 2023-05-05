@@ -18,4 +18,5 @@ public class CarResponse {
     private int costPerDay;
     private String description;
     private String owner;
+    private String imageName;
 }

@@ -21,6 +21,7 @@ public class Car {
     private String location;
     private int costPerDay;
     private String description;
+    private String imageName;
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "userId", referencedColumnName = "userId")
     private User user;

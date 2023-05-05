@@ -1,16 +1,21 @@
-import {Card, CardBody, CardFooter, Divider, GridItem, Image, Text} from "@chakra-ui/react";
-
-import car from "./../../assets/car.png"
+import {Card, CardBody, CardFooter, Divider, Flex, GridItem, Image, Text} from "@chakra-ui/react";
 import {Link} from "react-router-dom";
-import {useEffect} from "react";
+import React, {useEffect, useState} from "react";
+import axios from "axios";
 
 export default function CarCard(props) {
+    const [image, setImage] = useState();
 
     useEffect(() => {
-        console.log(props)
+        axios
+            .get("http://localhost:8080/api/image/" + props.imageName, {
+                responseType: 'blob',
+            })
+            .then((res) => {
+                const imageObjectURL = URL.createObjectURL(res.data);
+                setImage(imageObjectURL);
+            });
     }, []);
-
-
 
     function capitalizeFirstLetters(str) {
         let words = str.split(" ");
@@ -28,7 +33,9 @@ export default function CarCard(props) {
                 <Card maxW='sm' _hover={{transform: "scale(1.05)"}}
                       _active={{boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px"}}>
                     <CardBody p={0}>
-                        <Image src={car} borderRadius='0'/>
+                        <Flex h={"30vh"} alignItems={"center"} justifyContent={"center"}>
+                            <Image src={image} borderRadius='0' maxW={"100%"} maxH={"100%"}/>
+                        </Flex>
                         <Text fontSize={"2xl"} fontWeight={600} p={4} pb={2}>
                             {capitalizeFirstLetters(props.make + " " + props.model)}
                         </Text>

@@ -10,7 +10,6 @@ import {FaUserAlt} from "react-icons/fa";
 import {HiLocationMarker} from "react-icons/hi";
 
 export default function Car() {
-    const [state] = useContext(AppContext)
     const {carId} = useParams()
     const [car, setCar] = useState([]);
     const startDateRef = useRef();
@@ -18,13 +17,21 @@ export default function Car() {
     const [totalCost, setTotalCost] = useState(NaN);
 
     const [error, setError] = useState("");
+    const [image, setImage] = useState();
 
     useEffect(() => {
         axios
             .get("http://localhost:8080/api/car/" + carId)
             .then((res) => {
                 setCar(res.data);
-                console.log(car.data)
+                axios
+                    .get("http://localhost:8080/api/image/" + res.data.imageName, {
+                        responseType: 'blob',
+                    })
+                    .then((res) => {
+                        const imageObjectURL = URL.createObjectURL(res.data);
+                        setImage(imageObjectURL);
+                    });
             });
     }, []);
 
@@ -66,7 +73,7 @@ export default function Car() {
     return (
         <Box>
             <Flex justifyContent={"center"}>
-                <Image src={carImage} h={"50vh"}/>
+                <Image src={image} h={"50vh"}/>
             </Flex>
             <Container maxW="container.xl" textAlign="left" px="6">
                 <Box mx="10" my={4}>
