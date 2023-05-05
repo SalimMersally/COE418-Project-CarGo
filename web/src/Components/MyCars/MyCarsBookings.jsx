@@ -14,7 +14,7 @@ export default function MyCarsBookings() {
 
     function getBookings() {
         axios
-            .get("http://localhost:8080/api/booking", {
+            .get("http://localhost:8080/api/booking/car", {
                 headers: {
                     'Authorization': `Bearer ${state.userToken}`
                 }

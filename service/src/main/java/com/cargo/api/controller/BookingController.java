@@ -79,7 +79,6 @@ public class BookingController {
 
         Booking createdBooking = bookingRepository.save(booking);
 
-
         String message = "Your booking had been confirmed for the " + carName + "\nPlease wait for owner confirmation";
 
         new Thread(() -> {

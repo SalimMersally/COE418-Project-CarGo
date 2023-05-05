@@ -48,14 +48,13 @@ export default function Car() {
                 })
                 .then((res) => {
                     res.data.map((car) => {
-                        if(car.carId === parseInt(carId)) {
+                        if (car.carId === parseInt(carId)) {
                             setIsOwnCar(true);
                         }
                     })
                 });
         };
     }, []);
-
 
 
     function capitalizeFirstLetters(str) {
@@ -79,6 +78,10 @@ export default function Car() {
     }
 
     function bookCar() {
+        if (!state.isLogged) {
+            navigate("/login");
+        }
+
         if (!startDateRef.current.value || !endDateRef.current.value) {
             setError("Please fill start and end data");
         } else {
@@ -89,26 +92,22 @@ export default function Car() {
                 setError("End date should be after start date");
             } else {
                 setError("");
-                if (!state.isLogged) {
-                    navigate("/login");
-                } else {
-                    axios
-                        .post("http://localhost:8080/api/booking", {
-                            startDate: startDateRef.current.value,
-                            endDate: endDateRef.current.value,
-                            bookingPrice: totalCost,
-                            carId: carId,
-                        }, {
-                            headers: {
-                                'Authorization': `Bearer ${state.userToken}`
-                            }
-                        })
-                        .then((res) => {
-                            if (res.status === 200) {
-                                navigate("/book-a-car");
-                            }
-                        });
-                }
+                axios
+                    .post("http://localhost:8080/api/booking", {
+                        startDate: startDateRef.current.value,
+                        endDate: endDateRef.current.value,
+                        bookingPrice: totalCost,
+                        carId: carId,
+                    }, {
+                        headers: {
+                            'Authorization': `Bearer ${state.userToken}`
+                        }
+                    })
+                    .then((res) => {
+                        if (res.status === 200) {
+                            navigate("/book-a-car");
+                        }
+                    });
             }
         }
     }
@@ -230,7 +229,8 @@ export default function Car() {
                                     >
                                         BOOK
                                     </Button>
-                                    : <Text fontFamily="roboto" fontSize="2xl" fontWeight="700" textAlign={"center"} color={"blue.400"}>
+                                    : <Text fontFamily="roboto" fontSize="2xl" fontWeight="700" textAlign={"center"}
+                                            color={"blue.400"}>
                                         This is your car
                                     </Text>
                             }
