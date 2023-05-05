@@ -54,9 +54,9 @@ function Info() {
                     cargo.customer.help@gmail.com
                 </Text>
             </Flex>
-            
+
             <Flex py="6" alignItems="center">
-            <Text fontFamily="roboto" fontSize="lg" fontWeight="800" mb="1" mt={4}>
+                <Text fontFamily="roboto" fontSize="lg" fontWeight="800" mb="1" mt={4}>
                 Social Media: &nbsp;&nbsp;&nbsp;&nbsp;
             </Text>
             

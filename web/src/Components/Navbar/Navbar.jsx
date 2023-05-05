@@ -77,6 +77,9 @@ function Navbar() {
                     <Button mr="2">
                         <Link to="/book-a-car">BOOK</Link>
                     </Button>
+                    <Button mr="2">
+                        <Link to="/navigate">NAVIGATE</Link>
+                    </Button>
                 </ButtonGroup>
             </Flex>
         </Flex>
