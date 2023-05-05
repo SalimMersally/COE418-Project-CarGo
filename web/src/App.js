@@ -14,6 +14,7 @@ import LogOut from "./Components/LogOut/LogOut";
 import Car from "./Components/Car/Car";
 import MyCars from "./Components/MyCars/MyCars";
 import Livechat from './Components/LiveChat/LiveChat';
+import Nav from './Components/Map/Navigation';
 
 function App() {
     return (
@@ -30,6 +31,7 @@ function App() {
                 <Route path="/logOut" element={<LogOut/>}/>
                 <Route path="/book-a-car" element={<Book/>}/>
                 <Route path="/car/:carId" element={<Car/>}/>
+                <Route path = "/navigate" element = {<Nav/>}/>
                 <Route path='*' element={<Error/>}/>
             </Routes>
             <Footer/>

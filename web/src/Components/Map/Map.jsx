@@ -4,7 +4,7 @@ import "../../index.css"
 
 export default function DisplayMap() {
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
+    googleMapsApiKey: "AIzaSyCOcPOc-WgThkmXr4srcefhjXGobnUAPwc",
   });
 
   if (!isLoaded) return <div>Loading...</div>;
