@@ -20,6 +20,8 @@ export default function Car() {
     const [state] = useContext(AppContext);
     const navigate = useNavigate();
 
+    const [isOwnCar, setIsOwnCar] = useState(false);
+
     useEffect(() => {
         axios
             .get("http://localhost:8080/api/car/" + carId)
@@ -35,6 +37,26 @@ export default function Car() {
                     });
             });
     }, []);
+
+    useEffect(() => {
+        return () => {
+            axios
+                .get("http://localhost:8080/api/car/user", {
+                    headers: {
+                        'Authorization': `Bearer ${state.userToken}`
+                    }
+                })
+                .then((res) => {
+                    res.data.map((car) => {
+                        if(car.carId === parseInt(carId)) {
+                            setIsOwnCar(true);
+                        }
+                    })
+                });
+        };
+    }, []);
+
+
 
     function capitalizeFirstLetters(str) {
         let words = str.split(" ");
@@ -188,23 +210,30 @@ export default function Car() {
                             <Text fontFamily="roboto" fontSize="lg" fontWeight="400" color="red">
                                 {error}
                             </Text>
-                            <Button
-                                bg="blue.400"
-                                variant="outline"
-                                color="white"
-                                fontFamily="roboto"
-                                fontWeight="700"
-                                fontSize="xl"
-                                size="lg"
-                                borderRadius={10}
-                                w={"100%"}
-                                _hover={{bg: "#00538d"}}
-                                _active={{bg: "#00467a"}}
-                                textAlign={"center"}
-                                onClick={bookCar}
-                            >
-                                BOOK
-                            </Button>
+                            {
+                                !isOwnCar ?
+                                    <Button
+                                        bg="blue.400"
+                                        variant="outline"
+                                        color="white"
+                                        fontFamily="roboto"
+                                        fontWeight="700"
+                                        fontSize="xl"
+                                        size="lg"
+                                        borderRadius={10}
+                                        w={"100%"}
+                                        _hover={{bg: "#00538d"}}
+                                        _active={{bg: "#00467a"}}
+                                        textAlign={"center"}
+                                        onClick={bookCar}
+                                        disabled={isOwnCar}
+                                    >
+                                        BOOK
+                                    </Button>
+                                    : <Text fontFamily="roboto" fontSize="2xl" fontWeight="700" textAlign={"center"} color={"blue.400"}>
+                                        This is your car
+                                    </Text>
+                            }
                         </Box>
                     </Flex>
                 </Box>
