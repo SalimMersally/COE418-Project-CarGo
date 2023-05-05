@@ -4,7 +4,10 @@ import axios from "axios";
 import {AppContext} from "../../StateProvider";
 import {Box, Button, Container, Divider, Flex, Image, Input, Text} from "@chakra-ui/react";
 import carImage from "./../../assets/car.png"
-import {AiFillStar} from "react-icons/ai";
+import {AiFillStar, AiOutlineBgColors} from "react-icons/ai";
+import {MdConfirmationNumber} from "react-icons/md";
+import {FaUserAlt} from "react-icons/fa";
+import {HiLocationMarker} from "react-icons/hi";
 
 export default function Car() {
     const [state] = useContext(AppContext)
@@ -21,6 +24,7 @@ export default function Car() {
             .get("http://localhost:8080/api/car/" + carId)
             .then((res) => {
                 setCar(res.data);
+                console.log(car.data)
             });
     }, []);
 
@@ -72,6 +76,39 @@ export default function Car() {
                                 {capitalizeFirstLetters(car.make + " " + car.model)} #{car.year}
                             </Text>
                             <Text fontFamily="roboto" fontSize="2xl" fontWeight="700" py={2}>
+                                Information:
+                            </Text>
+                            <Box ml={4}>
+                                <Flex alignItems={"center"} my={2}>
+                                    <AiOutlineBgColors color={"#0072C6"} size={25}/>
+                                    <Text fontFamily="roboto" fontSize="l" fontWeight="400" ml={2}>
+                                        <b>Color: </b>
+                                        {car.color}
+                                    </Text>
+                                </Flex>
+                                <Flex alignItems={"center"} my={2}>
+                                    <MdConfirmationNumber color={"#0072C6"} size={25}/>
+                                    <Text fontFamily="roboto" fontSize="l" fontWeight="400" ml={2}>
+                                        <b>Plate Number: </b>
+                                        {car.plateNumber}
+                                    </Text>
+                                </Flex>
+                                <Flex alignItems={"center"} my={2}>
+                                    <FaUserAlt color={"#0072C6"} size={25}/>
+                                    <Text fontFamily="roboto" fontSize="l" fontWeight="400" ml={2}>
+                                        <b>Owner: </b>
+                                        {car.owner}
+                                    </Text>
+                                </Flex>
+                                <Flex alignItems={"center"} my={2}>
+                                    <HiLocationMarker color={"#0072C6"} size={25}/>
+                                    <Text fontFamily="roboto" fontSize="l" fontWeight="400" ml={2}>
+                                        <b>Location: </b>
+                                        {car.location}
+                                    </Text>
+                                </Flex>
+                            </Box>
+                            <Text fontFamily="roboto" fontSize="2xl" fontWeight="700" py={2} >
                                 Description:
                             </Text>
                             <Text fontFamily="roboto" fontSize="l" fontWeight="400">

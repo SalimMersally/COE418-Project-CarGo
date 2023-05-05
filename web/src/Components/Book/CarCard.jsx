@@ -2,8 +2,15 @@ import {Card, CardBody, CardFooter, Divider, GridItem, Image, Text} from "@chakr
 
 import car from "./../../assets/car.png"
 import {Link} from "react-router-dom";
+import {useEffect} from "react";
 
 export default function CarCard(props) {
+
+    useEffect(() => {
+        console.log(props)
+    }, []);
+
+
 
     function capitalizeFirstLetters(str) {
         let words = str.split(" ");
@@ -22,8 +29,13 @@ export default function CarCard(props) {
                       _active={{boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px"}}>
                     <CardBody p={0}>
                         <Image src={car} borderRadius='0'/>
-                        <Text fontSize={"2xl"} fontWeight={600}
-                              p={4}>{capitalizeFirstLetters(props.make + " " + props.model)}</Text>
+                        <Text fontSize={"2xl"} fontWeight={600} p={4} pb={2}>
+                            {capitalizeFirstLetters(props.make + " " + props.model)}
+                        </Text>
+                        <Text fontSize={"l"} fontWeight={400} px={4} pb={2}>
+                            <b>Owner: </b>
+                            {capitalizeFirstLetters(props.owner)}
+                        </Text>
                     </CardBody>
                     <Divider/>
                     <CardFooter justifyContent={"flex-end"} p={4}>

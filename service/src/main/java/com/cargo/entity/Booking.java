@@ -11,13 +11,13 @@ public class Booking {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long bookingId;
-    private Date startDate;
-    private Date endDate;
+    private String startDate;
+    private String endDate;
     private Double bookingPrice;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "userId", referencedColumnName = "userId")
     private User user;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "carId", referencedColumnName = "carId")
     private Car car;
 }
