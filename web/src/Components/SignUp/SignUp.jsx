@@ -1,4 +1,15 @@
-import {Box, Button, Container, Flex, Image, Input, InputGroup, InputRightElement, Text,} from "@chakra-ui/react";
+import {
+    Box,
+    Button,
+    Container,
+    Flex,
+    Image,
+    Input,
+    InputGroup,
+    InputRightElement,
+    Text,
+    useToast,
+} from "@chakra-ui/react";
 import React, {useRef, useState} from "react";
 
 //Images
@@ -25,6 +36,7 @@ function SignUp() {
     const phonesRef = useRef();
 
     const navigate = useNavigate();
+    const toast = useToast();
 
     function submitUser() {
         check()
@@ -40,6 +52,13 @@ function SignUp() {
                 })
                 .then((res) => {
                     if (res.data === "User registered successfully!") {
+                        toast({
+                            title: 'SIGNED UP',
+                            description: "We've created your account succesffully, you can can now log in.",
+                            status: 'success',
+                            duration: 4000,
+                            isClosable: true,
+                        })
                         navigate("/login");
                     }
                 }).catch((error) => {

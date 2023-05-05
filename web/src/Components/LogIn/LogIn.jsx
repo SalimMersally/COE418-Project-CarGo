@@ -1,5 +1,5 @@
 import React, {useContext, useRef, useState} from "react";
-import {Box, Button, Container, Flex, Input, InputGroup, InputRightElement, Text,} from "@chakra-ui/react";
+import {Box, Button, Container, Flex, Input, InputGroup, InputRightElement, Text, useToast,} from "@chakra-ui/react";
 import {ArrowForwardIcon} from "@chakra-ui/icons";
 import {AppContext} from "../../StateProvider";
 import axios from "axios";
@@ -13,7 +13,7 @@ function LogIn() {
     const emailRef = useRef();
     const passwordRef = useRef();
     const [error, setError] = useState("");
-
+    const toast = useToast();
     const navigate = useNavigate();
 
     function submit() {
@@ -25,6 +25,13 @@ function LogIn() {
             .then((res) => {
                 dispatch({type: "SET_LOG", value: true});
                 dispatch({type: "SET_TOKEN", value: res.data.jwtToken});
+                toast({
+                    title: 'LOGGED IN',
+                    description: "You've logged in successfully",
+                    status: 'success',
+                    duration: 5000,
+                    isClosable: true,
+                })
                 navigate("/profile");
             })
             .catch((error) => {
