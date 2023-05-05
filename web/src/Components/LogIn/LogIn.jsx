@@ -154,7 +154,7 @@ function LogIn() {
                                 fontSize="lg"
                                 textAlign="left"
                             >
-                                Sing Up
+                                Sign Up
                             </Text>
                         </Flex>
                     </Box>
