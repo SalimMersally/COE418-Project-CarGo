@@ -21,7 +21,6 @@ export default function MyCarsBookings() {
             })
             .then((res) => {
                 setBookingList(res.data);
-                console.log(res.data)
             });
     }
 

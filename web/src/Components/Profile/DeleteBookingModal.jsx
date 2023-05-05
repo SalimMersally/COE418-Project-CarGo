@@ -16,22 +16,20 @@ import {FaTrash} from "react-icons/fa";
 import axios from "axios";
 import {AppContext} from "../../StateProvider";
 
-//Images
-
-export default function DeleteCarModal(props) {
+export default function DeleteBookingModal(props) {
     const {isOpen, onOpen, onClose} = useDisclosure();
     const [state] = useContext(AppContext);
 
     function deleteBooking() {
         axios
-            .delete("http://localhost:8080/api/car/" + props.carId, {
+            .delete("http://localhost:8080/api/booking/" + props.bookingId, {
                 headers: {
                     'Authorization': `Bearer ${state.userToken}`
                 }
             })
             .then((res) => {
-                if(res.status === 200) {
-                    props.fetchCars();
+                if (res.status === 200) {
+                    props.getBookings();
                     onClose();
                 }
             })
@@ -39,7 +37,7 @@ export default function DeleteCarModal(props) {
 
     return (
         <>
-            <Tooltip hasArrow label="Delete Car" bg="gray.400">
+            <Tooltip hasArrow label="Delete Booking" bg="gray.400">
                 <Box as="button">
                     <FaTrash size={30} color={"#0072C6"} className={"trashIcon"} onClick={onOpen}/>
                 </Box>
@@ -62,7 +60,7 @@ export default function DeleteCarModal(props) {
                                 fontWeight="700"
                                 textAlign="center"
                             >
-                                Are you sure you want to delete this Car?
+                                Are you sure you want to delete this Booking?
                             </Text>
                         </ModalHeader>
                         <ModalFooter>

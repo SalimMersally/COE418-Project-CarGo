@@ -122,7 +122,7 @@ public class BookingController {
         } else {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(booking);
+        return ResponseEntity.ok("Deleted successfully");
     }
 
     public BookingResponse getBookingResponse(Booking booking) {
