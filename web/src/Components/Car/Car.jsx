@@ -1,9 +1,8 @@
 import React, {useContext, useEffect, useRef, useState} from "react";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
 import {AppContext} from "../../StateProvider";
 import {Box, Button, Container, Divider, Flex, Image, Input, Text} from "@chakra-ui/react";
-import carImage from "./../../assets/car.png"
 import {AiFillStar, AiOutlineBgColors} from "react-icons/ai";
 import {MdConfirmationNumber} from "react-icons/md";
 import {FaUserAlt} from "react-icons/fa";
@@ -18,6 +17,8 @@ export default function Car() {
 
     const [error, setError] = useState("");
     const [image, setImage] = useState();
+    const [state] = useContext(AppContext);
+    const navigate = useNavigate();
 
     useEffect(() => {
         axios
@@ -66,6 +67,26 @@ export default function Car() {
                 setError("End date should be after start date");
             } else {
                 setError("");
+                if (!state.isLogged) {
+                    navigate("/login");
+                } else {
+                    axios
+                        .post("http://localhost:8080/api/booking", {
+                            startDate: startDateRef.current.value,
+                            endDate: endDateRef.current.value,
+                            bookingPrice: totalCost,
+                            carId: carId,
+                        }, {
+                            headers: {
+                                'Authorization': `Bearer ${state.userToken}`
+                            }
+                        })
+                        .then((res) => {
+                            if (res.status === 200) {
+                                navigate("/book-a-car");
+                            }
+                        });
+                }
             }
         }
     }
@@ -115,7 +136,7 @@ export default function Car() {
                                     </Text>
                                 </Flex>
                             </Box>
-                            <Text fontFamily="roboto" fontSize="2xl" fontWeight="700" py={2} >
+                            <Text fontFamily="roboto" fontSize="2xl" fontWeight="700" py={2}>
                                 Description:
                             </Text>
                             <Text fontFamily="roboto" fontSize="l" fontWeight="400">

@@ -14,6 +14,7 @@ public class Booking {
     private String startDate;
     private String endDate;
     private Double bookingPrice;
+    private boolean accepted;
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "userId", referencedColumnName = "userId")
     private User user;

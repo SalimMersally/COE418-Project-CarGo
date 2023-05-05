@@ -8,11 +8,11 @@ import com.cargo.entity.User;
 import com.cargo.repository.BookingRepository;
 import com.cargo.repository.CarRepository;
 import com.cargo.repository.UserRepository;
+import com.cargo.util.EmailService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -27,8 +27,8 @@ import java.util.stream.Collectors;
 public class BookingController {
     private BookingRepository bookingRepository;
     private UserRepository userRepository;
-
     private CarRepository carRepository;
+    private EmailService emailService;
 
     @GetMapping()
     public List<BookingResponse> getAllBookings() {
@@ -49,7 +49,7 @@ public class BookingController {
         List<Car> carList = user.getCar();
 
         List<Booking> bookingList = new ArrayList<>();
-        for(Car car: carList) {
+        for (Car car : carList) {
             bookingList.addAll(bookingRepository.findBookingByCar(car));
         }
 
@@ -62,20 +62,54 @@ public class BookingController {
         booking.setBookingPrice(request.getBookingPrice());
         booking.setStartDate(request.getStartDate());
         booking.setEndDate(request.getEndDate());
+        booking.setAccepted(false);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
         User user = userRepository.findByEmail(email);
         booking.setUser(user);
 
+        String carName = "";
         if (carRepository.existsById(request.getCarId())) {
             Optional<Car> car = carRepository.findById(request.getCarId());
             booking.setCar(car.get());
+            carName = car.get().getMake() + " " + car.get().getModel() + " #" + car.get().getYear();
         }
 
         Booking createdBooking = bookingRepository.save(booking);
 
+
+        String message = "Your booking had been confirmed for the " + carName + "\nPlease wait for owner confirmation";
+
+        new Thread(() -> {
+            try {
+                emailService.sendEmail(email, "Booking Confirmation", message);
+            } catch (Exception e) {
+                System.out.println("Email is not valid");
+            }
+        }).start();
+
         return getBookingResponse(createdBooking);
+    }
+
+    @PostMapping("/{bookingId}")
+    public String acceptBooking(@PathVariable(value = "bookingId") Long bookingId) {
+        Optional<Booking> booking = bookingRepository.findById(bookingId);
+        booking.get().setAccepted(true);
+        bookingRepository.save(booking.get());
+
+        Car car = booking.get().getCar();
+        String carName = car.getMake() + " " + car.getModel() + " #" + car.getYear();
+        String message = "Your booking had been accepted for the " + carName;
+        new Thread(() -> {
+            try {
+                emailService.sendEmail(booking.get().getUser().getEmail(), "Booking Accepted", message);
+            } catch (Exception e) {
+                System.out.println("Email is not valid");
+            }
+        }).start();
+
+        return "Booking accepted";
     }
 
     @DeleteMapping("/{bookingId}")
@@ -92,10 +126,12 @@ public class BookingController {
 
     public BookingResponse getBookingResponse(Booking booking) {
         return new BookingResponse(
+                booking.getBookingId(),
                 booking.getStartDate(),
                 booking.getEndDate(),
                 booking.getBookingPrice(),
                 booking.getCar().getCarId(),
-                booking.getUser().getEmail());
+                booking.getUser().getEmail(),
+                booking.isAccepted());
     }
 }
