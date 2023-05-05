@@ -67,16 +67,19 @@ public class BookingController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
+
         User user = userRepository.findByEmail(email);
         booking.setUser(user);
 
         String carName = "";
+        User owner = null;
         if (carRepository.existsById(request.getCarId())) {
             Optional<Car> car = carRepository.findById(request.getCarId());
             booking.setCar(car.get());
             carName = car.get().getMake() + " " + car.get().getModel() + " #" + car.get().getYear();
+            owner = car.get().getUser();
         }
-
+        String emailToOwner = owner.getEmail();
         Booking createdBooking = bookingRepository.save(booking);
 
 
@@ -89,6 +92,16 @@ public class BookingController {
                 System.out.println("Email is not valid");
             }
         }).start();
+
+        String messageToOwner = "Your Car: " + carName +" has been booked" +"\nPlease Confirm";
+        new Thread(() -> {
+            try {
+                emailService.sendEmail(emailToOwner, "Your Car Has Been Booked", messageToOwner);
+            } catch (Exception e) {
+                System.out.println("Email is not valid");
+            }
+        }).start();
+
 
         return getBookingResponse(createdBooking);
     }
