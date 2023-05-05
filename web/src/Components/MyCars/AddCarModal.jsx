@@ -47,7 +47,7 @@ export default function AddCarModal(props) {
                     model: modelRef.current.value,
                     year: yearRef.current.value,
                     color: colorRef.current.value,
-                    plateNumberR: plateNumberRef.current.value,
+                    plateNumber: plateNumberRef.current.value,
                     location: locationRef.current.value,
                     costPerDay: costPerDayRef.current.value,
                     description: descriptionRef.current.value,
@@ -93,7 +93,6 @@ export default function AddCarModal(props) {
                 .then((res) => {
                     let data = new FormData();
                     data.append('image', imageData);
-                    console.log("name", res.data?.email + carId.toString() + ".png")
                     data.append("name", res.data?.email + carId.toString() + ".png")
 
                     axios.post("http://localhost:8080/api/image", data, {
@@ -267,7 +266,7 @@ export default function AddCarModal(props) {
                                     ref={costPerDayRef}
                                 />
                             </Flex>
-                            <Flex mt="4" justifyContent="space-between">
+                            <Flex justifyContent="space-between">
                                 <Text
                                     fontSize="lg"
                                     fontFamily="roboto"

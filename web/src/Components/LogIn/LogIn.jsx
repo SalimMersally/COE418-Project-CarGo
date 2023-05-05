@@ -23,12 +23,13 @@ function LogIn() {
                 password: passwordRef.current.value,
             })
             .then((res) => {
-                if (typeof res.data === "string") {
-                    setError(res.data);
-                } else {
-                    dispatch({ type: "SET_LOG", value: true });
-                    dispatch({ type: "SET_TOKEN", value: res.data.jwtToken });
-                    navigate("/profile");
+                dispatch({type: "SET_LOG", value: true});
+                dispatch({type: "SET_TOKEN", value: res.data.jwtToken});
+                navigate("/profile");
+            })
+            .catch((error) => {
+                if (error.response.status === 401) {
+                    setError(error.response.data);
                 }
             });
     }

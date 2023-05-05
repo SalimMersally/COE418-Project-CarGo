@@ -30,7 +30,7 @@ export default function MyCarsList() {
     return (
         <Box>
             <Grid templateColumns='repeat(3, 1fr)' gap={6} my={3}>
-                {carList.map(car => <MyCarCard key={car.carId} {...car} />)}
+                {carList.map(car => <MyCarCard key={car.carId} {...car} fetchCars={fetchCars}/>)}
                 <GridItem w='100%' h={"100%"} minH={"30vh"}>
                     <Flex justifyContent={"center"} alignItems={"center"} h={"100%"}>
                         <AddCarModal fetchCars={fetchCars}/>

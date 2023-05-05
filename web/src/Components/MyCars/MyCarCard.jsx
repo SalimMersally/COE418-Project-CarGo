@@ -1,10 +1,10 @@
-import {Card, CardBody, CardFooter, Divider, Flex, GridItem, Image, Text} from "@chakra-ui/react";
-
-import car from "./../../assets/car.png"
-import {Link} from "react-router-dom";
-import {useContext, useEffect, useState} from "react";
+import {Box, Card, CardBody, CardFooter, Divider, Flex, GridItem, Image, Text, Tooltip} from "@chakra-ui/react";
+import React, {useContext, useEffect, useState} from "react";
 import {AppContext} from "../../StateProvider";
 import axios from "axios";
+import {FaTrash} from "react-icons/fa";
+import {MdAddCircle} from "react-icons/md";
+import DeleteCarModal from "./DeleteCarModal";
 
 export default function MyCarCard(props) {
     const [state] = useContext(AppContext);
@@ -39,7 +39,6 @@ export default function MyCarCard(props) {
     }, []);
 
 
-
     function capitalizeFirstLetters(str) {
         let words = str.split(" ");
 
@@ -53,22 +52,30 @@ export default function MyCarCard(props) {
     return (
         <GridItem w='100%'>
             {/*<Link to={"/car/" + props.carId}>*/}
-                <Card maxW='sm' _hover={{transform: "scale(1.05)"}}
-                      _active={{boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px"}}>
-                    <CardBody p={0} >
-                        <Flex h={"30vh"} alignItems={"center"} justifyContent={"center"}>
-                            <Image src={image} borderRadius='0' maxW={"100%"} maxH={"100%"}/>
-                        </Flex>
-                        <Text fontSize={"2xl"} fontWeight={600}
-                              p={4}>{capitalizeFirstLetters(props.make + " " + props.model)}</Text>
-                    </CardBody>
-                    <Divider/>
-                    <CardFooter justifyContent={"flex-end"} p={4}>
-                        <Text fontSize={"xl"} fontWeight={500}>
-                            {props.costPerDay} $/day
-                        </Text>
-                    </CardFooter>
-                </Card>
+            <Card maxW='sm'>
+                <CardBody p={0}>
+                    <Flex h={"30vh"} alignItems={"center"} justifyContent={"center"}>
+                        <Image src={image} borderRadius='0' maxW={"100%"} maxH={"100%"}/>
+                    </Flex>
+                    <Text fontSize={"2xl"} fontWeight={600}
+                          px={4}>{capitalizeFirstLetters(props.make + " " + props.model)} #{props.year}</Text>
+                    <Text fontSize={"l"} fontWeight={400}
+                          px={4} pt={1}><b>Color: </b>{props.color}</Text>
+                    <Text fontSize={"l"} fontWeight={400}
+                          px={4} pt={1}><b>Plate Number: </b>{props.plateNumber}</Text>
+                    <Text fontSize={"l"} fontWeight={400}
+                          px={4} pt={1}><b>Location: </b>{props.location}</Text>
+                    <Text fontSize={"l"} fontWeight={400}
+                          px={4} py={1}><b>Description : </b>{props.description}</Text>
+                </CardBody>
+                <Divider/>
+                <CardFooter justifyContent={"space-between"} p={4}>
+                    <DeleteCarModal carId={props.carId} fetchCars={props.fetchCars}/>
+                    <Text fontSize={"xl"} fontWeight={500}>
+                        {props.costPerDay} $/day
+                    </Text>
+                </CardFooter>
+            </Card>
             {/*</Link>*/}
         </GridItem>
     );
