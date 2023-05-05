@@ -1,6 +1,7 @@
 package com.cargo.api.controller;
 
 import com.cargo.api.request.BookingRequest;
+import com.cargo.api.request.BookingStatusRequest;
 import com.cargo.api.response.BookingResponse;
 import com.cargo.entity.Booking;
 import com.cargo.entity.Car;
@@ -62,7 +63,7 @@ public class BookingController {
         booking.setBookingPrice(request.getBookingPrice());
         booking.setStartDate(request.getStartDate());
         booking.setEndDate(request.getEndDate());
-        booking.setAccepted(false);
+        booking.setUserResponse("Waiting");
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
@@ -93,23 +94,24 @@ public class BookingController {
     }
 
     @PostMapping("/{bookingId}")
-    public String acceptBooking(@PathVariable(value = "bookingId") Long bookingId) {
+    public String acceptBooking(@PathVariable(value = "bookingId") Long bookingId, @RequestBody BookingStatusRequest request) {
         Optional<Booking> booking = bookingRepository.findById(bookingId);
-        booking.get().setAccepted(true);
+        booking.get().setUserResponse(request.getUserResponse());
         bookingRepository.save(booking.get());
 
         Car car = booking.get().getCar();
         String carName = car.getMake() + " " + car.getModel() + " #" + car.getYear();
-        String message = "Your booking had been accepted for the " + carName;
+        String message = "Your booking had been " +  request.getUserResponse() + " for the " + carName;
+        String subject = "Booking " +  request.getUserResponse();
         new Thread(() -> {
             try {
-                emailService.sendEmail(booking.get().getUser().getEmail(), "Booking Accepted", message);
+                emailService.sendEmail(booking.get().getUser().getEmail(), subject, message);
             } catch (Exception e) {
                 System.out.println("Email is not valid");
             }
         }).start();
 
-        return "Booking accepted";
+        return subject;
     }
 
     @DeleteMapping("/{bookingId}")
@@ -132,6 +134,6 @@ public class BookingController {
                 booking.getBookingPrice(),
                 booking.getCar().getCarId(),
                 booking.getUser().getEmail(),
-                booking.isAccepted());
+                booking.getUserResponse());
     }
 }
