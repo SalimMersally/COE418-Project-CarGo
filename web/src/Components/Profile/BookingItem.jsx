@@ -14,6 +14,7 @@ export default function BookingItem(props) {
     const endDate = props.booking.endDate;
     const userEmail = props.booking.userEmail;
     const userResponse = props.booking.userResponse;
+    const ownerEmail = props.booking.ownerEmail;
 
     const [car, setCar] = useState({});
     const [state] = useContext(AppContext);
@@ -68,7 +69,7 @@ export default function BookingItem(props) {
                         <b>To:</b> {endDate}
                     </Text>
                     <Text fontFamily="roboto" fontWeight="400" fontSize="sm">
-                        <b>Owner Email:</b> {userEmail}
+                        <b>Owner Email:</b> {ownerEmail}
                     </Text>
                 </Box>
                 <Box w={"30%"}>

@@ -97,7 +97,7 @@ export default function MyCarBookingItem(props) {
                         <b>To:</b> {endDate}
                     </Text>
                     <Text fontFamily="roboto" fontWeight="400" fontSize="sm">
-                        <b>Owner Email:</b> {userEmail}
+                        <b>Rentee Email:</b> {userEmail}
                     </Text>
                 </Box>
                 <Box w={"33%"}>

@@ -16,4 +16,6 @@ public class BookingResponse {
     private Double bookingPrice;
     private Long carId;
     private String userEmail;
-    private String userResponse;}
+    private String userResponse;
+    private String ownerEmail;
+}

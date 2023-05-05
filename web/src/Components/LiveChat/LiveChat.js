@@ -18,7 +18,6 @@ function Livechat() {
             s.parentNode.insertBefore(g, s);
 
             g.onload = function () {
-                console.log(window.chatwootSDK);
                 window.chatwootSDK.run({
                     websiteToken: process.env.REACT_APP_WEBSITE_TOKEN,
                     baseUrl: BASE_URL

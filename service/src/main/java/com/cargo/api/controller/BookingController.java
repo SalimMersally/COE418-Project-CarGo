@@ -101,7 +101,6 @@ public class BookingController {
             }
         }).start();
 
-
         return getBookingResponse(createdBooking);
     }
 
@@ -146,6 +145,7 @@ public class BookingController {
                 booking.getBookingPrice(),
                 booking.getCar().getCarId(),
                 booking.getUser().getEmail(),
-                booking.getUserResponse());
+                booking.getUserResponse(),
+                booking.getCar().getUser().getEmail());
     }
 }
