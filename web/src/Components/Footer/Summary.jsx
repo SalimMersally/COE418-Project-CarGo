@@ -1,5 +1,6 @@
 import React from "react";
 import { Box, Flex, Text, Image } from "@chakra-ui/react";
+import { useSpeechSynthesis } from 'react-speech-kit';
 
 // Images
 import facebook from "./../../assets/facebook.png";
@@ -8,6 +9,17 @@ import twitter from "./../../assets/twitter.png";
 import CarGoLogo from "./../../assets/CarGoLogo.png";
 
 function Summary() {
+    const { speak, cancel } = useSpeechSynthesis();
+
+    const handleMouseOver = (e) => {
+      speak({ text: e.target.innerText });
+      e.target.style.background = "darkgray";
+    };
+  
+    const handleMouseOut = (e) => {
+      cancel();
+      e.target.style.background = "";
+    };
     return (
         <Box w="30%">
             <Image src={CarGoLogo} w={44} pb={12}/>
@@ -18,6 +30,7 @@ function Summary() {
                 fontWeight="300"
                 textAlign="center"
                 pb="8"
+                onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}
             >
                 We created our website to help you to find the most dependable cars, we offer you high quality services anytime and anywhere without any problems.
             </Text>
