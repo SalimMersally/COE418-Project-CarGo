@@ -1,6 +1,6 @@
 import React from "react";
 import {Box, Flex, Image, Text} from "@chakra-ui/react";
-
+import { useSpeechSynthesis } from 'react-speech-kit';
 // Images
 import email from "./../../assets/email.png";
 import phone from "./../../assets/phone.png";
@@ -10,12 +10,23 @@ import instagram from "../../assets/instagram.png";
 import twitter from "../../assets/twitter.png";
 
 function Info() {
+    const { speak, cancel } = useSpeechSynthesis();
+
+    const handleMouseOver = (e) => {
+      speak({ text: e.target.innerText });
+      e.target.style.background = "lightgray";
+    };
+  
+    const handleMouseOut = (e) => {
+      cancel();
+      e.target.style.background = "white";
+    };
     return (
         <Box w="100%">
             <Text fontFamily="roboto" fontSize="4xl" fontWeight="800" my="3">
                 Available 24/7
             </Text>
-            <Text
+            <Text onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}
                 fontFamily="roboto"
                 fontSize="sm"
                 fontWeight="300"
